@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Test site</title>
+  <style>
+    #site {
+      font-size: 30px;
+      color: blue;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+    <img src="images/LOGO.png" alt="LG logo" style="display: block; margin: 20px auto; max-width: 200px;">
+  
+    <div id="middle-container">
+      <div id="form">
+        <form onsubmit="event.preventDefault(); showSite()">
+          <input id="lg-email" pattern="^[a-zA-Z]+\.[a-zA-Z]+@landg\.com$" title="Please enter an email in the format firstname.lastname@landg.com" placeholder="Your username" required>
+          <input id="password" pattern="(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$" title="Please enter a password with at least 8 characters, one special character and one uppercase character" type="password" placeholder="Your password" required>
+          <button>Login</button>
+        </form>
+      </div>
+  
+      <div id="site" style="display:none;">Hello, user.</div>
+    </div>
+  
+    <script>
+        function showSite() {
+          const username = document.getElementById('lg-email').value;
+      
+          const namePart = username.split('@')[0]; 
+          const [firstName, lastName] = namePart.split('.');
+          const formattedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+          const formattedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
+      
+          document.getElementById('form').style.display = 'none';
+      
+          const siteDiv = document.getElementById('site');
+          siteDiv.innerHTML = `
+  <div style="text-align: center;">
+    <div style="font-size: 30px; color: blue; margin-bottom: 20px;">
+      Welcome, ${formattedFirstName} ${formattedLastName}.
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%;">
+    <label style="font-size: 20px;">Upload a file:</label>
+  
+    <div style="display: flex; justify-content: center; width: 100%;">
+    <input type="file" id="fileInput" title="Please select a file" style="font-size: 20px; max-width: 90vw;">
+    </div>
+  
+    <button onclick="uploadFile()" style="font-size: 1em; padding: 10px 20px;">Upload File</button>
+    <div id="uploadStatus" style="font-size: 20px; margin-top: 10px;"></div>
+</div>
+
+`;
+
+          siteDiv.style.display = 'block';
+        }
+      
+        async function uploadFile() {
+          const fileInput = document.getElementById('fileInput');
+          const file = fileInput.files[0];
+      
+          if (!file) {
+            alert("Please select a file to upload");
+            return;
+          }
+      
+          const formData = new FormData();
+          formData.append('file', file);
+      
+          try {
+        const response = await fetch('http://localhost:8000/upload/', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const result = await response.json();
+        document.getElementById('uploadStatus').textContent = `File '${result.filename}' uploaded successfully.`;
+
+
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  </script>
+      
+      
+  </body>
+  
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+    }
+  
+    #middle-container {
+      height: calc(100% - 100px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+  
+    input, button {
+      font-size: 1em;
+      padding: 10px;
+      margin: 5px 0;
+      width: 250px;
+      box-sizing: border-box;
+    }
+  </style>
+  
+</html>
