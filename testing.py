@@ -8,7 +8,6 @@ import time
 options = webdriver.ChromeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
-options.add_argument("--user-data-dir=/tmp/chrome-user-data")
 options.add_argument("--headless")
 options.add_argument("--disable-dev-shm-usage")
 
