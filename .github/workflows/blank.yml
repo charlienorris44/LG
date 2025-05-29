@@ -24,13 +24,20 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - uses: docker-practice/actions-setup-docker@master
+
+      - run: |
+          docker build -t website .
+          cd api
+          docker build -t upload-api .
+          docker network create webnetwork
+          docker run -d  --network webnetwork -p 8080:80 website
+          docker run -d --network webnetwork -v uploads:/app/uploads -p 8000:8000  upload-api
+
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Api 
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          python3 testing.py
+          
