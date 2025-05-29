@@ -40,5 +40,6 @@ jobs:
       - name: Api 
         run: |
           pip3 install selenium
+          sudo apt-get install chromium-chromedriver
           python3 testing.py
           
