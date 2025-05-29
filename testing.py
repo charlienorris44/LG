@@ -9,6 +9,9 @@ driver = webdriver.Chrome()
 options = webdriver.ChromeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
+options.add_argument("--user-data-dir=/tmp/chrome-user-data")
+options.add_argument("--headless")
+
 driver.get("http://localhost:8080/")
 
 username_input = driver.find_element(By.ID, 'lg-email')
