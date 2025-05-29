@@ -5,12 +5,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 import time
 
-driver = webdriver.Chrome()
 options = webdriver.ChromeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
 options.add_argument("--user-data-dir=/tmp/chrome-user-data")
 options.add_argument("--headless")
+
+driver = webdriver.Chrome()
 
 driver.get("http://localhost:8080/")
 
