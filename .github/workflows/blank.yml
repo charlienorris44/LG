@@ -26,10 +26,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
       - uses: docker/setup-docker-action@v4
-      - uses: nanasess/setup-chromedriver@v2
+      - uses: browser-actions/setup-chrome@v1
         with:
-          chromeapp: chrome
-
+          install-chromedriver: true
       - run: |
           docker build -t website .
           cd api
