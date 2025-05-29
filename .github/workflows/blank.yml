@@ -43,6 +43,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Api 
         run: |
+          pkill -f chrome
           pip3 install selenium
           python3 testing.py
           
